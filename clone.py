@@ -8,6 +8,7 @@ app = Flask(__name__)
 client = MongoClient('localhost', 27017)    #Configure the connection to the database
 db = client.library    #Select the database
 users = db.users #Select the collection
+books = db.books
 
 
 
@@ -72,7 +73,7 @@ def del_user(user_id):
 		if user.modified_count != 0:
     			output = {'message' : 'Sorry, user does not exists'}
 		else:
-    			output = {'message' : 'User updated successfully'}
+    			output = {'message' : 'User deleted successfully'}
 		return jsonify({'result' : output})
 
 @app.route('/book', methods = ['POST'])
@@ -117,17 +118,17 @@ def update_book(book_id):
 
 @app.route('/book/<book_id>', methods = ['DELETE'])
 def del_book(book_id):
-    	if ObjectId.is_valid(user_id) == False:
-    		output = {'message' : 'Sorry, invalid userID'}
+    	if ObjectId.is_valid(book_id) == False:
+    		output = {'message' : 'Sorry, invalid bookID'}
 		return jsonify({'result' : output})
-		id = ObjectId(user_id)
+		id = ObjectId(book_id)
 		data = request.get_json()
 		
 		book = books.update_one({'_id' : id}, {'$set': {'status' : False} })
 		if book.modified_count != 0:
-    			output = {'message' : 'Sorry, user does not exists'}
+    			output = {'message' : 'Sorry, book does not exists'}
 		else:
-    			output = {'message' : 'User updated successfully'}
+    			output = {'message' : 'Book deleted successfully'}
 		return jsonify({'result' : output})
 
 
